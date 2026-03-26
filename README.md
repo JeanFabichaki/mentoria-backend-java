@@ -22,6 +22,7 @@ O arquivo de entrada deve ser um CSV padrão RFC 4180 (UTF-8, delimitador `;`).
 | `receiver_agency` | String (4) | Agência sem dígito. |
 | `receiver_account` | String (12) | Conta com dígito. |
 
+Use o script em python que está no projeto para gerar os dados.
 * * * * *
 
 ### 3\. Regras de Negócio de Missão Crítica
