@@ -18,20 +18,4 @@ public class SpringbootPaySplitApplication {
         SpringApplication.run(SpringbootPaySplitApplication.class, args);
     }
 
-    @Bean
-    public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("step1", jobRepository)
-                .tasklet((contribution, chunkContext) -> {
-                    System.out.println("Hello, World!");
-                    return RepeatStatus.FINISHED;
-                }, transactionManager)
-                .build();
-    }
-
-    @Bean
-    public Job job(JobRepository jobRepository, Step step) {
-        return new JobBuilder("Meu primeiro job", jobRepository)
-                .start(step)
-                .build();
-    }
 }
