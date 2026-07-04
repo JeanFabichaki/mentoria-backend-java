@@ -1,5 +1,7 @@
 package com.example.springboot_pay_split;
 
+import com.example.springboot_pay_split.domain.Transaction;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -9,7 +11,6 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -17,10 +18,10 @@ import org.springframework.batch.item.validator.BeanValidatingItemProcessor;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class BatchConfig {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     @Bean
     public Job job(JobRepository jobRepository, Step step) {
@@ -42,20 +43,14 @@ public class BatchConfig {
                 .skip(org.springframework.batch.item.validator.ValidationException.class)
                 .skipLimit(20000)
                 .listener(new ValidacaoSkipListener())
-//                .writer(chunk -> {
-//                    for (Transaction transaction : chunk) {
-//                        System.out.println("Lendo transacao: " + transaction.externalId());
-//                    }
-//                })
                 .writer(saveTransactionWriter)
-                //relatorios
                 .build();
     }
 
     @Bean
     public BeanValidatingItemProcessor<Transaction> validadorDeTransacao() {
         BeanValidatingItemProcessor<Transaction> processor = new BeanValidatingItemProcessor<>();
-        processor.setFilter(false);
+        processor.setFilter(false); // usei como false para conseguir obter log o motivo da falha atraves de um exception
         return processor;
     }
 

@@ -1,4 +1,4 @@
-package com.example.springboot_pay_split;
+package com.example.springboot_pay_split.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
