@@ -1,4 +1,4 @@
-package com.example.springboot_pay_split;
+package com.example.springboot_pay_split.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

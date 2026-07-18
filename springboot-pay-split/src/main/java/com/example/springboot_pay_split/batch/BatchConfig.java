@@ -1,6 +1,9 @@
-package com.example.springboot_pay_split;
+package com.example.springboot_pay_split.batch;
 
+import com.example.springboot_pay_split.ValidacaoSkipListener;
 import com.example.springboot_pay_split.domain.Transaction;
+import com.example.springboot_pay_split.model.TransactionEntity;
+import com.example.springboot_pay_split.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
