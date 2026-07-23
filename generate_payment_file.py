@@ -4,7 +4,7 @@ import random
 
 # Configurações do Gerador
 TOTAL_ROWS = 20000
-OUTPUT_FILE = 'input_pagamentos.csv'
+OUTPUT_FILE = '/Users/amandasantos/Projetos/mentoria-backend-java/springboot-pay-split/src/main/resources/data/input/input_pagamentos.csv'
 
 def generate_cnpj():
     return ''.join([str(random.randint(0, 9)) for _ in range(14)])
