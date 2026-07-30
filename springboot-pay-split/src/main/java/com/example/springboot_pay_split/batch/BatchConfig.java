@@ -1,6 +1,6 @@
 package com.example.springboot_pay_split.batch;
 
-import com.example.springboot_pay_split.ValidacaoSkipListener;
+import com.example.springboot_pay_split.batch.listener.ValidacaoSkipListener;
 import com.example.springboot_pay_split.domain.Transaction;
 import com.example.springboot_pay_split.model.TransactionEntity;
 import com.example.springboot_pay_split.repository.TransactionRepository;
@@ -55,35 +55,6 @@ public class BatchConfig {
         BeanValidatingItemProcessor<Transaction> processor = new BeanValidatingItemProcessor<>();
         processor.setFilter(false); // usei como false para conseguir obter log o motivo da falha atraves de um exception
         return processor;
-    }
-
-    @Bean
-    public ItemWriter<Transaction> saveTransactionWriter() {
-        return new ItemWriter<Transaction>() {
-            @Override
-            public void write(Chunk<? extends Transaction> chunk) throws Exception {
-                for (Transaction dto : chunk) {
-
-                    if (transactionRepository.findByExternalId(dto.externalId()).isPresent()) {
-                        log.warn("Transação já existe, será ignorada", dto.externalId());
-                        continue;
-                    }
-                    TransactionEntity entity = new TransactionEntity();
-                    entity.setExternalId(dto.externalId());
-                    entity.setAmountGross(dto.amountGross());
-                    entity.setAmountTax(dto.amountTax());
-                    entity.setMerchantName(dto.merchantName());
-                    entity.setLegalInvoiceId(dto.legalInvoiceId());
-                    entity.setPayerDocument(dto.payerDocument());
-                    entity.setReceiverDocument(dto.receiverDocument());
-                    entity.setReceiverAgency(dto.receiverAgency());
-                    entity.setReceiverBank(dto.receiverBank());
-                    entity.setReceiverAccount(dto.receiverAccount());
-
-                    transactionRepository.save(entity);
-                }
-            }
-        };
     }
 }
 

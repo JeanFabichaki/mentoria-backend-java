@@ -1,4 +1,4 @@
-package com.example.springboot_pay_split;
+package com.example.springboot_pay_split.batch.listener;
 
 import com.example.springboot_pay_split.domain.Transaction;
 import lombok.extern.slf4j.Slf4j;
