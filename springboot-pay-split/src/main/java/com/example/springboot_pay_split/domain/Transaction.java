@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.UUID;
 import java.math.BigDecimal;
 
 public record Transaction(
-        @NotBlank UUID externalId,
+        @NotBlank @UUID String externalId,
         @NotNull String merchantName,
         @NotBlank String payerDocument,
         @NotNull @Positive(message = "Valor da transacao nao pode ser negativo") BigDecimal amountGross,

@@ -1,6 +1,7 @@
 package com.example.springboot_pay_split.batch;
 
 import com.example.springboot_pay_split.batch.listener.ValidacaoSkipListener;
+import com.example.springboot_pay_split.batch.writer.PaymentItemWriter;
 import com.example.springboot_pay_split.domain.Transaction;
 import com.example.springboot_pay_split.model.TransactionEntity;
 import com.example.springboot_pay_split.repository.TransactionRepository;
@@ -37,16 +38,18 @@ public class BatchConfig {
     public Step lerTransacoesStep(JobRepository jobRepository,
                                   PlatformTransactionManager transactionManager,
                                   ItemReader<Transaction> transactionItemReader,
-                                  BeanValidatingItemProcessor<Transaction> validador, ItemWriter<Transaction> saveTransactionWriter) {
+                                  BeanValidatingItemProcessor<Transaction> validador,
+                                  PaymentItemWriter paymentItemWriter,
+                                  ValidacaoSkipListener validacaoSkipListener) {
         return new StepBuilder("lerTransacoesArquivo", jobRepository)
                 .<Transaction, Transaction>chunk(100, transactionManager)
                 .reader(transactionItemReader)
                 .processor(validador)
+                .writer(paymentItemWriter)
                 .faultTolerant()
                 .skip(org.springframework.batch.item.validator.ValidationException.class)
                 .skipLimit(20000)
-                .listener(new ValidacaoSkipListener())
-                .writer(saveTransactionWriter)
+                .listener(validacaoSkipListener) // Usa o bean injetado pelo Spring
                 .build();
     }
 
