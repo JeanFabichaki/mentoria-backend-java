@@ -1,5 +1,6 @@
 package com.example.springboot_pay_split.batch;
 
+import com.example.springboot_pay_split.batch.listener.ReportJobListener;
 import com.example.springboot_pay_split.batch.listener.ValidacaoSkipListener;
 import com.example.springboot_pay_split.batch.writer.PaymentItemWriter;
 import com.example.springboot_pay_split.domain.Transaction;
@@ -28,9 +29,10 @@ public class BatchConfig {
     private final TransactionRepository transactionRepository;
 
     @Bean
-    public Job job(JobRepository jobRepository, Step step) {
+    public Job job(JobRepository jobRepository, Step step, ReportJobListener reportJobListener) {
         return new JobBuilder("processarTransacoes", jobRepository)
                 .start(step)
+                .listener(reportJobListener)
                 .build();
     }
 

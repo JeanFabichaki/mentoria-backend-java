@@ -7,6 +7,7 @@ import com.example.springboot_pay_split.model.TaxRecordsEntity;
 import com.example.springboot_pay_split.repository.PaymentRepository;
 import com.example.springboot_pay_split.repository.SettlementRecordsRepository;
 import com.example.springboot_pay_split.repository.TaxRecordsRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
@@ -20,17 +21,12 @@ import java.util.UUID;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PaymentItemWriter implements ItemWriter<Transaction> {
 
     private final PaymentRepository paymentRepository;
     private final SettlementRecordsRepository settlementRepository;
     private final TaxRecordsRepository taxRepository;
-
-    public PaymentItemWriter(PaymentRepository paymentRepository, SettlementRecordsRepository settlementRepository, TaxRecordsRepository taxRepository) {
-        this.paymentRepository = paymentRepository;
-        this.settlementRepository = settlementRepository;
-        this.taxRepository = taxRepository;
-    }
 
     @Transactional
     public void write(Chunk<? extends Transaction> chunk) throws Exception {
